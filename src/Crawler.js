@@ -28,7 +28,7 @@ export default class Crawler {
 
   snap() {
     let urlPath = this.paths.shift()
-    if (!urlPath) return Promise.resolve()
+    if (typeof urlPath !== 'string') return Promise.resolve()
     urlPath = url.resolve('/', urlPath) // Resolve removes trailing slashes
     if (this.processed[urlPath]) {
       return this.snap()
@@ -49,7 +49,7 @@ export default class Crawler {
         window.document.head.appendChild(script)
       }
       const html = jsdom.serializeDocument(window.document)
-      this.extractNewLinks(window, urlPath)
+      // this.extractNewLinks(window, urlPath)
       this.handler({ urlPath, html })
       window.close() // Release resources used by jsdom
       return this.snap()

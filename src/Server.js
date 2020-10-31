@@ -16,12 +16,12 @@ export default class Server {
 
     // Yes I just copied most of this from react-scripts ¯\_(ツ)_/¯
     app.use(publicPath,
-      historyApiFallback({
-        index: '/200.html',
-        disableDotRule: true,
-        htmlAcceptHeaders: ['text/html'],
-      }),
-      express.static(baseDir, { index: '200.html' })
+      // historyApiFallback({
+      //   index: '/200.html',
+      //   disableDotRule: true,
+      //   htmlAcceptHeaders: ['text/html'],
+      // }),
+      express.static(baseDir)
     )
 
     if (proxy) {
