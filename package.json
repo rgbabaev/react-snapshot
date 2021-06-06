@@ -10,7 +10,7 @@
   "scripts": {
     "build": "babel --out-dir lib src",
     "build:watch": "npm run build -- --watch",
-    "prepublish": "rm -rf lib/* && npm run build"
+    "prepublishOnly": "rm -rf lib/* && npm run build"
   },
   "dependencies": {
     "connect-history-api-fallback": "^1.3.0",
