@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import glob from 'glob'
 import url from 'url'
 import Server from './Server'
 import Crawler from './Crawler'
@@ -31,13 +32,21 @@ export default () => {
 
   options.exclude = options.exclude.map((p) => path.join(basename, p).replace(/\\/g, '/'))
   options.include = options.include.map((p) => path.join(basename, p).replace(/\\/g, '/'))
-  options.include.unshift(basename)
+  // options.include.unshift(basename)
 
   const buildDirPath = path.resolve(`./${buildDir}`)
   const outputDirPath = path.resolve(`./${outputDir}`)
   if (!fs.existsSync(buildDir)) throw new Error(`No build directory exists at: ${buildDirPath}`)
   const writer = new Writer(buildDirPath, outputDirPath)
-  writer.move('index.html', '200.html')
+
+  fs.copyFileSync(
+    path.resolve(buildDirPath, 'index.html'), 
+    path.resolve(buildDirPath, '200.html')
+  )
+
+  const files = glob.sync('**/index.html', { cwd: buildDirPath })
+    .map(fileName => `/${fileName}`.slice(0, -11));
+  options.include.push(...files)
 
   const server = new Server(buildDirPath, basename, 0, pkg.proxy)
   server.start().then(() => {
